@@ -1,3 +1,4 @@
+import os
 from flask import Flask, render_template, request, jsonify
 from openai import OpenAI
 import time
@@ -5,9 +6,14 @@ import time
 # Flask app initialization
 app = Flask(__name__)
 
-# Assistant ID and API Key
-ASSISTANT_ID = "asst_fl2z0jnxQDwn0O31CrCsItJS"
-client = OpenAI(api_key="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")
+# Load API Key and Assistant ID from environment variables
+ASSISTANT_ID = os.getenv("ASSISTANT_ID", "asst_fl2z0jnxQDwn0O31CrCsItJS")
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+
+if not OPENAI_API_KEY:
+    raise ValueError("OPENAI_API_KEY environment variable is not set.")
+
+client = OpenAI(api_key=OPENAI_API_KEY)
 
 thread_id = None  # Global variable to store thread ID
 
